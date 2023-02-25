@@ -1,11 +1,28 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
+import React, { useState } from "react";
+import Head from "next/head";
+import { Inter } from "@next/font/google";
+import styles from "@/styles/cookies.module.css";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const [isGenerated, setIsGenerated] = useState(false);
+  const [name, setName] = useState("");
+  const [value, setValue] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  function handleGenerateClick() {
+    if (!name || !value) {
+      setErrorMessage("Veuillez remplir tous les champs");
+    } else {
+      setIsGenerated(true);
+      setName("");
+      setValue("");
+      setTimeout(() => setIsGenerated(false), 2000);
+      setErrorMessage(null);
+    }
+  }
+
   return (
     <>
       <Head>
@@ -14,110 +31,54 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>pages/index.tsx</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
-
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
+      <body className={styles.selector}>
+        <h1 className={styles.title}>
+          Générateur de <span className={styles.span}>&nbsp;Cookies&nbsp;</span>{" "}
+          🍪
+        </h1>
+        <div className={styles.container}>
+          <label htmlFor="nom">Nom :</label>
+          <input
+            type="text"
+            id="nom"
+            name="nom"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
-          <div className={styles.thirteen}>
-            <Image
-              src="/thirteen.svg"
-              alt="13"
-              width={40}
-              height={31}
-              priority
-            />
+          <br />
+
+          <label htmlFor="valeur">Valeur :</label>
+          <input
+            type="text"
+            id="valeur"
+            name="valeur"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+          <br />
+
+          {errorMessage && (
+            <div className={styles["error-message"]}>{errorMessage}</div>
+          )}
+
+          <div className={styles["button-container"]}>
+            <button
+              type="button"
+              id="generer"
+              style={{ marginRight: 15 }}
+              onClick={handleGenerateClick}
+            >
+              Générer
+            </button>
+            <button type="button" id="afficher">
+              Afficher
+            </button>
           </div>
+          {isGenerated && (
+            <div className={styles["cookie-message"]}>Cookie généré</div>
+          )}
         </div>
-
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+      </body>
     </>
-  )
+  );
 }

@@ -73,11 +73,14 @@
 }
 
 .error-message {
-  background-color: #ff9494;
+  background-color: #ff5d5d;
   color: white;
   font-size: 14px;
   padding: 10px;
-  margin-top: 10px;
   border-radius: 5px;
   display: block;
+  position: absolute;
+  bottom: 180px;
+  left: 50%;
+  transform: translateX(-50%);
 }

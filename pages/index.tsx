@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Head from "next/head";
 import { Inter } from "@next/font/google";
 import styles from "@/styles/cookies.module.css";
+import CookieGenerator from "./CookieGenerator";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,6 +37,7 @@ export default function Home() {
           Générateur de <span className={styles.span}>&nbsp;Cookies&nbsp;</span>{" "}
           🍪
         </h1>
+        <CookieGenerator />
         <div className={styles.container}>
           <label htmlFor="nom">Nom :</label>
           <input

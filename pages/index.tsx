@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Head from "next/head";
 import { Inter } from "@next/font/google";
 import styles from "@/styles/cookies.module.css";
-import CookieGenerator from "./CookieGenerator";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,6 +10,7 @@ export default function Home() {
   const [name, setName] = useState("");
   const [value, setValue] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
   function handleGenerateClick() {
     if (!name || !value) {
@@ -21,6 +21,11 @@ export default function Home() {
       setValue("");
       setTimeout(() => setIsGenerated(false), 2000);
       setErrorMessage(null);
+      const date = new Date();
+      date.setTime(date.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 jours
+      const expires = date.toUTCString();
+
+      document.cookie = `${name}=${value};expires=${expires};path=/;domain=localhost`;
     }
   }
 
@@ -37,7 +42,6 @@ export default function Home() {
           Générateur de <span className={styles.span}>&nbsp;Cookies&nbsp;</span>{" "}
           🍪
         </h1>
-        <CookieGenerator />
         <div className={styles.container}>
           <label htmlFor="nom">Nom :</label>
           <input

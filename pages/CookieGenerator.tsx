@@ -18,6 +18,8 @@ const CookieGenerator = () => {
     setSuccessMessage("Cookie créé !");
     setTimeout(() => setSuccessMessage(""), 2000);
   };
+
+  return null;
 };
 
 export default CookieGenerator;

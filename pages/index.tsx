@@ -11,10 +11,12 @@ export default function Home() {
   const [value, setValue] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [cookieList, setCookieList] = useState([]);
 
   function handleGenerateClick() {
     if (!name || !value) {
       setErrorMessage("Veuillez remplir tous les champs");
+      setTimeout(() => setErrorMessage(null), 2000);
     } else {
       setIsGenerated(true);
       setName("");
@@ -26,6 +28,15 @@ export default function Home() {
       const expires = date.toUTCString();
 
       document.cookie = `${name}=${value};expires=${expires};path=/;domain=localhost`;
+    }
+  }
+
+  function handleDisplayClick() {
+    if (cookieList.length > 0) {
+      setCookieList([]);
+    } else {
+      const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+      setCookieList(cookies);
     }
   }
 
@@ -76,13 +87,18 @@ export default function Home() {
             >
               Générer
             </button>
-            <button type="button" id="afficher">
-              Afficher
+            <button type="button" id="afficher" onClick={handleDisplayClick}>
+              {cookieList.length > 0 ? "Masquer" : "Afficher"}
             </button>
           </div>
           {isGenerated && (
             <div className={styles["cookie-message"]}>Cookie généré</div>
           )}
+          <ul>
+            {cookieList.map((cookie) => (
+              <li key={cookie}>{cookie}</li>
+            ))}
+          </ul>
         </div>
       </body>
     </>
